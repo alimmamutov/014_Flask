@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}
+    Article detail
+{% endblock %}
+
+{% block body %}
+    <h1>{{ data['title']}}</h1>
+    <p>{{ data['text'] }}</p>
+    <a href="{{ url_for('user.get_user', pk=data['user_id']) }}">{{ data['username'] }}</a>
+{% endblock %}
