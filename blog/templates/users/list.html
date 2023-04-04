@@ -4,16 +4,22 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Users:</h1>
-    <ul>
-        {% for user_id in users %}
+    <div class="row">
+        <div class="col">
+            <h1>Users:</h1>
+            <ul>
+                {% for user_id in users %}
 
-            <li>
-                <a href='{{ url_for('user.get_user', pk=user_id) }}'>
-                    {{ users[user_id] }}
-                </a>
-            </li>
+                    <li>
+                        <a href='{{ url_for('user.get_user', pk=user_id) }}'>
+                            {{ users[user_id] }}
+                        </a>
+                    </li>
 
-        {% endfor %}
-    </ul>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-danger">Danger</button>
+        </div>
+    </div>
+
 {% endblock %}

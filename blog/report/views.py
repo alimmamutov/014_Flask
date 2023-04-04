@@ -4,5 +4,5 @@ report = Blueprint('report', __name__, static_folder='../static', url_prefix='/r
 
 
 @report.route('/')
-def user_list():
+def report_list():
     return 'hello rep'
