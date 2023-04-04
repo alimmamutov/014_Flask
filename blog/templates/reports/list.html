@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+    Reports list
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h1>reports:</h1>
+            <ul>
+                {% for report in reports %}
+
+                    <li>
+                        {{ report }}
+                    </li>
+
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn btn-danger">Danger</button>
+        </div>
+    </div>
+
+{% endblock %}
