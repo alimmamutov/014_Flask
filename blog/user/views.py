@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect
+from flask_login import login_required
 from werkzeug.exceptions import NotFound
 
 user = Blueprint('user', __name__, static_folder='../static', url_prefix='/users')
@@ -12,21 +13,27 @@ USERS = {
 
 @user.route('/')
 def user_list():
+    from blog.models import User
+    users = User.query.all()
     return render_template(
         'users/list.html',
-        users=USERS
+        users=users
     )
 
 
-@user.route('/<pk>')
-def get_user(pk: int):
-    pk = int(pk)
-    try:
-        user_name = USERS[pk]
-    except KeyError:
-        # raise NotFound(f'User id {pk} not found')
-        return redirect('https://www.yandex.ru/')  # redirected to another urls
+@user.route('/<int:pk>')
+@login_required
+def profile(pk: int):
+
+    # try:
+    # user_name = USERS[pk]
+    from blog.models import User
+    _user = User.query.filter_by(id=pk).one_or_none()
+    # raise NotFound(f'User id {pk} not found')
+    if not _user:
+        raise NotFound(f'User id {pk} not found')
+        # return redirect('https://www.yandex.ru/')  # redirected to another urls
     return render_template(
         'users/detail.html',
-        user_name=user_name
+        user=_user
     )

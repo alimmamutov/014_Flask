@@ -17,7 +17,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ articles[article].title }}</h5>
                                 <p class="card-text">{{ articles[article].text }}</p>
-                                <a href="{{ url_for('article.get_article', pk=articles[article].user_id) }}"
+                                <a href="{{ url_for('article.get_article', pk=article) }}"
                                 class="btn
                                 btn-primary">Open article</a>
                             </div>
