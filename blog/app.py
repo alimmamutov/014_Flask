@@ -1,22 +1,40 @@
 """
 Здесь второй вариант запуска приложени через фабрику приложений
 """
-
+from os import getenv, path
+from json import load
+from .extension import db, login_manager
 from flask import Flask
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
+
 from blog.config import Development
+from .extension import db, login_manager
+from .article.views import article
+from .index.views import index
+from .models import User
+from .user.views import user
+# from .index.views import index
+from .report.views import report
+from .auth.views import auth
 
-
-db = SQLAlchemy()
-login_manager = LoginManager()
+VIEWS = [
+    index,
+    user,
+    article,
+    report,
+    auth
+]
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(Development())
-    db.init_app(app)  # здесь связали бд с приложением
-    from .models import User
+    register_extensions(app)
+    register_blueprints(app)
+    return app
+
+
+def register_extensions(app):
+    db.init_app(app)
 
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
@@ -25,19 +43,7 @@ def create_app() -> Flask:
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    register_blueprints(app)
-
-    return app
-
 
 def register_blueprints(app: Flask):
-    from blog.report.views import report
-    from blog.user.views import user
-    from blog.article.views import article
-    from blog.auth.views import auth
-    app.register_blueprint(user)
-    app.register_blueprint(report)
-    app.register_blueprint(article)
-    app.register_blueprint(auth)
-
-
+    for view in VIEWS:
+        app.register_blueprint(view)

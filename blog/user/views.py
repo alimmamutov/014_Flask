@@ -12,6 +12,7 @@ USERS = {
 
 
 @user.route('/')
+@login_required
 def user_list():
     from blog.models import User
     users = User.query.all()
@@ -30,10 +31,18 @@ def profile(pk: int):
     from blog.models import User
     _user = User.query.filter_by(id=pk).one_or_none()
     # raise NotFound(f'User id {pk} not found')
-    if not _user:
+    if _user is None:
         raise NotFound(f'User id {pk} not found')
         # return redirect('https://www.yandex.ru/')  # redirected to another urls
     return render_template(
         'users/detail.html',
         user=_user
     )
+
+
+def get_user_name(pk: int):
+    if pk in USERS:
+        user_name = USERS[pk]["name"]
+    else:
+        raise NotFound("User id:{}, not found".format(pk))
+    return user_name
