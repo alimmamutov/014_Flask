@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect
+from flask_login import login_required
 from werkzeug.exceptions import NotFound
 
 from blog.user.views import USERS
@@ -53,6 +54,7 @@ def article_list():
 
 
 @article.route('/<int:pk>')
+@login_required
 def get_article(pk: int):
     data = ARTICLES[pk]
     data['username'] = USERS[data['user_id']]
