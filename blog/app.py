@@ -3,11 +3,13 @@
 """
 from os import getenv, path
 from json import load
-from .extension import db, login_manager
+
+from . import commands
+from .extensions import db, login_manager
 from flask import Flask
 
-from blog.config import Development
-from .extension import db, login_manager
+# from blog.config import Development         I changed class based config to env based conf
+from .extensions import db, login_manager
 from .article.views import article
 from .index.views import index
 from .models import User
@@ -27,9 +29,11 @@ VIEWS = [
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.config.from_object(Development())
+    # app.config.from_object(Development())
+    app.config.from_object('blog.config')
     register_extensions(app)
     register_blueprints(app)
+    register_commands(app)
     return app
 
 
@@ -47,3 +51,8 @@ def register_extensions(app):
 def register_blueprints(app: Flask):
     for view in VIEWS:
         app.register_blueprint(view)
+
+
+def register_commands(app: Flask):
+    app.cli.add_command(commands.init_db)
+    app.cli.add_command(commands.create_init_user)
