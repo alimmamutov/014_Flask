@@ -1,7 +1,7 @@
 # dockerfile using poetry
 FROM python:3.8.10-slim-buster
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl && apt-get install -y libpq-dev && apt-get install -y  build-essential
 
 RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.0.5 POETRY_HOME=/root/poetry python -
 
